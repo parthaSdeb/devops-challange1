@@ -1,0 +1,60 @@
+pipeline{
+    
+    environment{
+        
+        registry = "partha00011/toop10sports"
+        registryCredential = 'docker-credentials'
+        dockerImage = ''
+        
+    }
+    
+    agent any
+    
+    stages{
+        
+        stage('Cloning the repository'){
+            
+            steps{
+                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/parthaSdeb/devops-challange1.git'
+            }
+        }
+        
+        stage('Creating docker image for top10sports'){
+            
+            steps{
+                dir('work2/top10sports'){
+                    script{
+                         
+                         dockerImage = docker.build registry + ":$BUILD_NUMBER"
+                    }
+                }
+            }
+        }
+        
+        stage('push docker image to dockerhub'){
+            steps{
+                script {
+                    
+                    docker.withRegistry( '', registryCredential ){
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy the application'){
+            steps{
+                dir('work2/top10sports') {
+                    
+                    sh "sed -i s,partha00011/toop10sports,partha00011/toop10sports:${BUILD_NUMBER},g top10sports-manifest.yaml"
+                    
+                    sh "kubectl apply -f top10sports-manifest.yaml"
+                    
+                
+                }
+            }
+        }
+        
+        
+    }
+}
