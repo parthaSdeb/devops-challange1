@@ -1,0 +1,44 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: top10-ingress
+  labels:
+    name: top10
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: top10.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: top10movies-svc
+            port: 
+              number: 80
+
+      - path: "/top10movies"
+        pathType: Prefix
+        backend:
+          service:
+            name: top10movies-svc
+            port:
+              number: 80
+
+      - path: "/top10songs"
+        pathType: Prefix
+        backend:
+          service:
+            name: top10songs-svc
+            port:
+              number: 80
+
+      - path: "/top10games"
+        pathType: Prefix
+        backend:
+          service:
+            name: top10games-svc
+            port:
+              number: 80
+

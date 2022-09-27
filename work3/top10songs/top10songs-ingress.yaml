@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: top10movies-ingress
   labels:
-    name: top10movies
+    name: top10songs
 spec:
   ingressClassName: nginx
   rules:
@@ -18,7 +18,7 @@ spec:
             port: 
               number: 80
 
-        path: "/top10movies"
+        path: "/top10songs"
         backend:
           service:
             name: top10songs-svc
