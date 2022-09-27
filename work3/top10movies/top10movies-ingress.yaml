@@ -5,6 +5,7 @@ metadata:
   labels:
     name: top10movies
 spec:
+  ingressClassName: nginx
   rules:
   - host: topmovies.example.com
     http:
@@ -15,4 +16,11 @@ spec:
           service:
             name: top10movies-svc
             port: 
+              number: 80
+
+        path: "/top10movies"
+        backend:
+          service:
+            name: top10movies-svc
+            port:
               number: 80
