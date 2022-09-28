@@ -1,0 +1,33 @@
+pipeline{
+    
+    
+    agent any
+    
+    stages{
+        
+        stage('Cloning the repository'){
+            
+            steps{
+                git branch: 'main', credentialsId: 'github-credentials', url: 'https://github.com/parthaSdeb/devops-challange1.git'
+            }
+        }
+ 
+        
+        stage('Upgrading the nginx version'){
+            steps{
+                dir('work2-3') {
+                    
+                    sh "sed -i s,nginx:version,nginx:$Imagetag,g nginx-version-manifest.yaml"
+                    
+                    sh "kubectl apply -f nginx-version-manifest.yaml"
+                    
+                    echo "the nginx version is upgraded to: nginx:$Imagetag"
+                    
+                
+                }
+            }
+        }
+        
+        
+    }
+}
