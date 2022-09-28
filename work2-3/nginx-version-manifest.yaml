@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: nginx:1.18
+        image: nginx:version
         imagePullPolicy: IfNotPresent
         resources:
           limits:
